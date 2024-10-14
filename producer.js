@@ -4,18 +4,19 @@ const msg = process.argv[2];
 const run = async () => {
     try {
         const kafka = new Kafka({
-            "clientId": "kafkaapp",
-            "brokers": ["youripaddress:9092"]
+            "clientId": "1001",
+            "brokers": ["localhost:9092"]
         });
 
         const producer = kafka.producer();
         await producer.connect();
         console.log('connected');
+        console.log(msg);
 
-        const partition = msg[0].toLowerCase() < "n" ? 0 : 1;
+        const partition = 0;
 
         const result = await producer.send({
-            "topic": "Users",
+            "topic": "firsttopic",
             "messages": [{"value": msg, "partition": partition}]
         })
 

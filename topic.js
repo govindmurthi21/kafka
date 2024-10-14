@@ -4,7 +4,7 @@ const run = async () => {
     try {
         const kafka = new Kafka({
             "clientId": "kafkaapp",
-            "brokers": ["youripaddress:9092"]
+            "brokers": ["localhost:9092"]
         });
 
         const admin = kafka.admin();
