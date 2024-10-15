@@ -49,7 +49,7 @@ wss.on("connection", (ws) => {
          const partition = 0;
       
          const result = await producer.send({
-             "topic": "firsttopic",
+             "topic": "msganalysistopic",
              "messages": [{"value": message, "partition": partition}]
          })
       
@@ -71,17 +71,16 @@ wss.on("connection", (ws) => {
 console.log(`WebSocket server listening on port ${PORT}`);
 
 const sub = rabbit.createConsumer({
-   queue: 'secondQueue',
+   queue: 'msg-analysis-receiver-queue',
    queueOptions: {durable: false},
    // handle 2 messages at a time
    qos: {prefetchCount: 1}
  }, (msg) => {
-   console.log(msg);
    const result = {
       ...msg.body,
-      rabbitId: msg.consumerTag,
-      rabbitQueue: msg.routingKey,
-      rabbitTime: new Date(msg.timestamp).toLocaleDateString()
+      receiverId: msg.consumerTag,
+      receiverQueue: msg.routingKey,
+      receiverTime: new Date().toDateString()
    };
    console.log(result);
    if (webs.readyState === WebSocket.OPEN) {
